@@ -1,31 +1,92 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/markovk1n/spoty/internal/service/spotify"
+	"github.com/markovk1n/spoty/models"
 )
 
 func (h *Handler) home(c *gin.Context) {
-
+	userID := GetUserID(c)
 	token1, _ := spotify.GetSpotifyToken(h.ClientID, h.ClientSecret)
+	at := "5IS4dQ9lDW01IY1buR7bW7,7dGJo4pcD2V6oG8kP0tJRR,3YQKmKGau1PzlVlkL1iodx,6olE6TJLqED3rqDCT0FyPh"
 
 	client := spotify.NewClient(token1)
 	albumsResult, _ := client.Album.List("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc,2cWBwpqMsDJC1ZUwz813lo,2WT1pbYjLJciAR26yMebkH,3PZmQxxLUZwyyMgXWUpmuw")
-	artisResult, _ := client.Artist.Get("5IS4dQ9lDW01IY1buR7bW7")
+	art := GetArtistsForHome(token1, at)
+	// artRes := []spotify.Artist{}
+	// ///
+	// artists := []string{
+	// "5IS4dQ9lDW01IY1buR7bW7",
+	// 	"7dGJo4pcD2V6oG8kP0tJRR",
+	// 	"3YQKmKGau1PzlVlkL1iodx",
+	// 	"6olE6TJLqED3rqDCT0FyPh",
+	// }
+
+	// for i := range artists {
+	// 	artist1, _ := client.Artist.Get(artists[i])
+	// 	artRes = append(artRes, *artist1)
+	// 	time.Sleep(1 * time.Second)
+	// 	fmt.Println(artist1)
+
+	// }
+
+	// ///
+
 	homeResult := &Home{
+		HomeUser: models.User{
+			Id: userID,
+		},
 		HomeAlbums:  albumsResult,
-		HomeArtists: artisResult,
+		HomeArtists: art,
 	}
-	fmt.Println(token1)
 
 	c.HTML(http.StatusOK, "index.html", homeResult)
 
 }
 
 type Home struct {
+	HomeUser    models.User
 	HomeAlbums  *spotify.AlbumsResult
-	HomeArtists *spotify.Artist
+	HomeArtists *spotify.ArtistsResult
+}
+
+func GetArtistsForHome(token, ids string) *spotify.ArtistsResult {
+	url := fmt.Sprintf("https://api.spotify.com/v1/artists?ids=%s", ids)
+
+	// Создаем HTTP-клиент
+	client := &http.Client{}
+
+	// Создаем GET-запрос
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return nil
+	}
+
+	// Устанавливаем заголовок Authorization
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	// Отправляем запрос
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return nil
+	}
+	defer resp.Body.Close()
+
+	// Считываем тело ответа
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return nil
+	}
+	res := &spotify.ArtistsResult{}
+	json.Unmarshal(body, res)
+	return res
 }

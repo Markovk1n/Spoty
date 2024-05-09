@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered Content</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Цвет фона страницы */
+        }
+
+        .container {
+            text-align: center; /* Центрируем содержимое внутри контейнера */
+            background-color: #fff; /* Цвет фона контейнера */
+            border-radius: 10px; /* Скругление углов контейнера */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень контейнера */
+        }
+
+        .section {
+            margin-bottom: 20px; /* Пространство между секциями */
+        }
+
+        h2 {
+            color: #333; /* Цвет заголовков секций */
+        }
+
+        ul {
+            list-style-type: none; /* Убираем маркеры списка */
+            padding: 0;
+        }
+
+        li {
+            background-color: #f9f9f9; /* Цвет фона элементов списка */
+            padding: 10px 20px; /* Отступы внутри элементов списка */
+            margin-bottom: 5px; /* Пространство между элементами списка */
+            border-radius: 5px; /* Скругление углов элементов списка */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень элементов списка */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="http://localhost:8080/" class="btn btn-primary">Home</a>
+
+        <div class="section">
+            <h2>Артисты</h2>
+            <ul>
+                {{ range .results.Artists.Items }}
+                <li><a href="/artists/{{ .ID }}">{{ .Name }}</a></li>
+                    
+                {{ end }}
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Треки</h2>
+            <ul>
+                {{ range .results.Tracks.Items }}
+                    <li><a href="/track/{{ .ID }}">{{ .Name }}</a></li>
+                {{ end }}
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Альбомы</h2>
+            <ul>
+                {{ range .results.Albums.Items }}
+                    <li><a href="/albums/{{ .ID }}">{{ .Name }}</a></li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

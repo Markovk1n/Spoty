@@ -5,7 +5,7 @@ type SearchService service
 type SearchResult struct {
 	Artists *Artists `json:"artists,omitempty"`
 	Tracks  *Tracks  `json:"tracks,omitempty"`
-	Albums  *Artists `json:"albums,omitempty"`
+	Albums  *Albums  `json:"albums,omitempty"`
 }
 
 type SearchParams struct {

@@ -70,6 +70,14 @@
 <body>
     
     <div class="container">
+        <a href="http://localhost:8080/" class="btn btn-primary">Home</a>
+
+        <form action="/search" method="Get">
+            <div class="new-search">
+                <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </div>
+        </form>
         <div class="track-details">
             <h2>{{.TrackInfo.Name}}</h2>
             <p>Artists: 

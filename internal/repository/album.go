@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/jmoiron/sqlx"
@@ -71,6 +70,6 @@ func (t *AlbumRepository) GetAlbumsComm(albumId string) ([]models.AlbumCommentRe
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("ya tut bul")
+
 	return albumComments, nil
 }

@@ -91,14 +91,29 @@
     </style>
 </head>
 <body>
-    
+ 
+
     <div class="container">
+        <a href="http://localhost:8080/" class="btn btn-primary">Home</a>
+
+        <form action="/search" method="Get">
+            <div class="new-search">
+                <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </div>
+        </form>
        
         <h2 class="title">Альбом</h2>
        
         <div class="album">
+
+            <div class="images">
+                {{with index .AlbumInfo.Images 1}}
+                <img src="{{.Url}}" alt="Artist Image" style="width: 300px; height: 400px;">
+            {{end}}
+            </div>
             <h2>{{.AlbumInfo.Name}}</h2>
-            <p>Genres: {{.AlbumInfo.Genres}}</p>
+           
             <p>Label: {{.AlbumInfo.Label}}</p>
             <p>Popularity: {{.AlbumInfo.Popularity}}</p>
             <p>Release Date: {{.AlbumInfo.ReleaseDate}}</p>

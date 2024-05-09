@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +43,7 @@ func (h *Handler) getAlbumById(c *gin.Context) {
 	// Ress := AlbumResponse{
 
 	// }
-	fmt.Println(comm, albumId)
+
 	c.HTML(http.StatusOK, "album.html", res)
 
 }
@@ -68,5 +67,6 @@ func (h *Handler) CreateCommentForAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, "created")
+	c.Redirect(http.StatusSeeOther, "/albums/"+input.AlbumID)
+
 }

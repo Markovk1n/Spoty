@@ -45,6 +45,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	router.GET("/", h.home)
 
+	router.GET("/search", h.search)
+
 	auth := router.Group("/auth")
 	{
 		auth.GET("/", h.authPage)

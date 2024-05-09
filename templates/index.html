@@ -58,31 +58,62 @@
 <body>
     
     <div class="container">
-        <div class="auth-button-container">
-            <a href="http://localhost:8080/auth" class="auth-button" id="authButton">Авторизация</a>
-        </div>
+        
+        {{if ge .HomeUser.Id 1}}
+    <div class="auth-button-container">
+        <a href="/sign-out" class="auth-button" id="authButton">Выход</a>
+    </div>
+        {{ else }}
+    <div class="auth-button-container">
+        <a href="http://localhost:8080/auth" class="auth-button" id="authButton">Авторизация</a>
+    </div>
+        {{ end }}
+    
+    
+        <form action="/search" method="Get">
+            <div class="new-search">
+                <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </div>
+        </form>
+        
         <h2 class="title"><a href="http://localhost:8080/albums">Альбомы</a></h2>
-
         {{range .HomeAlbums.Albums}}
             <div class="album">
                 <h2><a href="http://localhost:8080/albums/{{.ID}}">{{.Name}}</a></h2>
-                <p>Genres: {{.Genres}}</p>
+               
                 <p>Label: {{.Label}}</p>
                 <p>Popularity: {{.Popularity}}</p>
                 <p>Release Date: {{.ReleaseDate}}</p>
                 <p>Total Tracks: {{.TotalTracks}}</p>
+                <div class="images">
+                    {{with index .Images 1}}
+                    <img src="{{.Url}}" alt="Album Image" style="width: 300px; height: 400px;">
+                {{end}}
+                </div>
             </div>
         {{end}}
 
         <h2 class="title">Артисты</h2>
-        {{.HomeArtists.Name}}
         {{range .HomeArtists.Artists}}
-            <div class="album">
-                <h2>{{.Name}}</h2>
-                <p>Genres: {{.Genres}}</p>
-                <p>Popularity: {{.Popularity}}</p>
+        <div class="album artist">
+            <h2><a href="/artists/{{ .ID }}">{{.Name}}</a></h2>
+            <p>Popularity: {{.Popularity}}</p>
+            <h3>Genres:</h3>
+            <ul>
+                {{range .Genres}}
+                <li>{{.}}</li>
+                {{end}}
+            </ul>
+            <h3>Images:</h3>
+            <div class="images">
+                {{with index .Images 1}}
+                <img src="{{.Url}}" alt="Artist Image" style="width: 300px; height: 400px;">
+            {{end}}
             </div>
+        </div>
         {{end}}
+        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

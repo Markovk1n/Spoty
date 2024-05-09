@@ -50,7 +50,7 @@ func (h *Handler) CreateCommentForTrack(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, "created")
+	c.Redirect(http.StatusSeeOther, "/track/"+input.TrackID)
 }
 func GetUserID(c *gin.Context) int {
 	if obj, ok := c.Get("user_id"); ok {
