@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px; /* Уменьшено для центрирования */
+            width: 100%;
+            padding: 20px;
+        }
+        .album {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .title {
+            text-align: center; /* Центрирование заголовка */
+            margin-bottom: 20px;
+        }
+
+        /* Стили для плеера */
+        .tracks-container {
+            background-color: #fff; /* Темный серый цвет фона */
+            color: #fff; /* Белый цвет текста для контраста */
+            max-height: 500px; /* Задайте максимальную высоту для контейнера, чтобы он мог прокручиваться */
+            overflow-y: auto; /* Разрешите вертикальную прокрутку */
+            border: 1px solid #555; /* Добавьте рамку для визуального отделения */
+            border-radius: 10px; /* Округлите края рамки */
+            padding: 10px; /* Добавьте немного отступа для контейнера */
+        }
+
+
+
+        .tracks-list {
+            list-style-type: none; /* Уберите маркеры у списка */
+            padding: 0; /* Уберите отступы у списка */
+        }
+
+        .tracks-list li {
+            margin-bottom: 15px; /* Добавьте небольшой отступ между треками */
+        }
+
+        .player {
+            margin-top: 5px; /* Добавьте небольшой отступ над плеером */
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .player-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .player-buttons button {
+            background-color: #573b8a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .player-buttons button:hover {
+            background-color: #6d44b8;
+        }
+
+        /* Коменты */
+        .comments {
+            margin-top: 20px;
+        }
+        .comment {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+       
+        <h2 class="title">Альбом</h2>
+       
+        <div class="album">
+            <h2>{{.AlbumInfo.Name}}</h2>
+            <p>Genres: {{.AlbumInfo.Genres}}</p>
+            <p>Label: {{.AlbumInfo.Label}}</p>
+            <p>Popularity: {{.AlbumInfo.Popularity}}</p>
+            <p>Release Date: {{.AlbumInfo.ReleaseDate}}</p>
+            <p>Total Tracks: {{.AlbumInfo.TotalTracks}}</p>
+        </div>
+        
+        <h2 class="title">Треки</h2>
+        <div class="tracks-container">
+            <ul class="tracks-list">
+                {{range .AlbumInfo.Tracks.Items}}
+                    <li>
+                        <h4><a href="http://localhost:8080/track/{{.ID}}">{{.Name}}</a></h4>
+                        <div class="player">
+                            <audio controls>
+                                <source src="{{ .PreviewURL }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </li>
+                {{end}}
+            </ul>
+        </div>
+
+        <form action="/albums/{{ .AlbumInfo.ID }}" method="Post">
+            <div class="new-comment">
+                <input name="comment" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                <button type="submit" class="btn btn-outline-primary">Comment</button>
+            </div>
+        </form>
+        
+
+        <div class="comments">
+            <h3>Comments:</h3>
+            {{range .Comments}}
+                <div class="comment">
+                    <p><strong>{{.Username}}</strong>: {{.Comment}}</p>
+                </div>
+            {{end}}
+        </div>
+        
+        
+    </div>
+  
+        
+        
+        
+
+        
+        
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
+
+    
+       
+   
+    <script>
+        // JavaScript функции для управления плеером
+
+        var audio = document.querySelector('audio');
+        audio.addEventListener('loadedmetadata', function() {
+            var duration = audio.duration;
+            var durationElement = document.querySelector('.duration');
+            var minutes = Math.floor(duration / 60);
+            var seconds = Math.floor(duration % 60);
+            durationElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        });
+
+        audio.addEventListener('timeupdate', function() {
+            var currentTime = audio.currentTime;
+            var currentTimeElement = document.querySelector('.current-time');
+            var minutes = Math.floor(currentTime / 60);
+            var seconds = Math.floor(currentTime % 60);
+            currentTimeElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        });
+    </script>
+</body>
+</html>

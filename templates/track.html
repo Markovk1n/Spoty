@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Track Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+        .track-details {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .player {
+            margin-top: 20px;
+        }
+        .player audio {
+            width: 100%;
+        }
+       
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .player-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .player-buttons button {
+            background-color: #573b8a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .player-buttons button:hover {
+            background-color: #6d44b8;
+        }
+
+        /* Коменты */
+        .comments {
+            margin-top: 20px;
+        }
+        .comment {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="track-details">
+            <h2>{{.TrackInfo.Name}}</h2>
+            <p>Artists: 
+                {{range $index, $artist := .TrackInfo.Artists}}
+                    {{if $index}}, {{end}}
+                    {{$artist.Name}}
+                {{end}}
+            </p>
+            <p>Album: {{.TrackInfo.Album.Name}}</p>
+            <p>Popularity: {{.TrackInfo.Popularity}}</p>
+            <div class="player">
+                <audio controls>
+                    <source src="{{.TrackInfo.PreviewURL}}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+
+        <form action="/track/{{ .TrackInfo.ID }}" method="Post">
+            <div class="new-comment">
+                <input name="comment" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                <button type="submit" class="btn btn-outline-primary">Comment</button>
+            </div>
+        </form>
+        
+
+        <div class="comments">
+            <h3>Comments:</h3>
+            {{range .Comments}}
+                <div class="comment">
+                    <p><strong>{{.Username}}</strong>: {{.Comment}}</p>
+                </div>
+            {{end}}
+        </div>
+        
+
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript функции для управления плеером
+
+        var audio = document.querySelector('audio');
+        audio.addEventListener('loadedmetadata', function() {
+            var duration = audio.duration;
+            var durationElement = document.querySelector('.duration');
+            var minutes = Math.floor(duration / 60);
+            var seconds = Math.floor(duration % 60);
+            durationElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        });
+
+        audio.addEventListener('timeupdate', function() {
+            var currentTime = audio.currentTime;
+            var currentTimeElement = document.querySelector('.current-time');
+            var minutes = Math.floor(currentTime / 60);
+            var seconds = Math.floor(currentTime % 60);
+            currentTimeElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        });
+    </script>
+</body>
+</html>

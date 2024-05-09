@@ -42,11 +42,29 @@ func (h *Handler) singIn(c *gin.Context) {
 	token, err := h.services.Authorization.GenerateToken(input.Username, input.Password)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-
 		return
 	}
+
+	// Устанавливаем токен как значение в cookie
+	cookie := &http.Cookie{
+		Name:  "session_token",
+		Value: token,
+		Path:  "/",
+	}
+	http.SetCookie(c.Writer, cookie)
+
+	// Возвращаем токен в JSON-ответе
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
 	})
 
 }
+
+func (h *Handler) authPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "auth.html", nil)
+}
+
+// func (h *Handler) singInGet(c *gin.Context) {
+// 	c.HTML(http.StatusOK, "login.html", nil)
+
+// }

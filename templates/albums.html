@@ -58,12 +58,9 @@
 <body>
     
     <div class="container">
-        <div class="auth-button-container">
-            <a href="http://localhost:8080/auth" class="auth-button" id="authButton">Авторизация</a>
-        </div>
-        <h2 class="title"><a href="http://localhost:8080/albums">Альбомы</a></h2>
-
-        {{range .HomeAlbums.Albums}}
+       
+        <h2 class="title">Альбомы</h2>
+        {{range .Albums}}
             <div class="album">
                 <h2><a href="http://localhost:8080/albums/{{.ID}}">{{.Name}}</a></h2>
                 <p>Genres: {{.Genres}}</p>
@@ -74,27 +71,12 @@
             </div>
         {{end}}
 
-        <h2 class="title">Артисты</h2>
-        {{.HomeArtists.Name}}
-        {{range .HomeArtists.Artists}}
-            <div class="album">
-                <h2>{{.Name}}</h2>
-                <p>Genres: {{.Genres}}</p>
-                <p>Popularity: {{.Popularity}}</p>
-            </div>
-        {{end}}
+       
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Функция для изменения текста и ссылки кнопки авторизации
-        function changeAuthButton() {
-            var authButton = document.getElementById('authButton');
-            authButton.textContent = 'Авторизован';
-            authButton.href = 'ttp://localhost:8080/auth'; // Здесь вы можете установить ссылку на другую страницу, если требуется
-        }
-    </script>
+   
 </body>
 </html>

@@ -22,7 +22,7 @@ import (
 func Run(cfg *configs.AppConfigs) {
 	log := logger.NewLogger("debug")
 	log.Info("Wait db creating")
-	time.Sleep(10 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	db, err := postgres.NewDB(configs.Postgres{
 		Host:     cfg.Postgres.Host,
@@ -38,7 +38,7 @@ func Run(cfg *configs.AppConfigs) {
 
 	repos := repository.NewRepository(db)
 	service := service.NewService(repos)
-	handler := handler.NewHandler(service)
+	handler := handler.NewHandler(service, cfg.ClientID, cfg.ClientSecret)
 
 	srv := new(server.Server)
 	go func() {

@@ -8,8 +8,9 @@ import (
 )
 
 type AppConfigs struct {
-	Postgres Postgres
-	Token    string
+	Postgres     Postgres
+	ClientID     string
+	ClientSecret string
 }
 type Postgres struct {
 	Host     string
@@ -35,6 +36,8 @@ func InitConfig() (AppConfigs, error) {
 		SSLMode:  os.Getenv("DB_SSL_MODE"),
 	}
 
-	token := os.Getenv("TOKEN")
-	return AppConfigs{Postgres: database, Token: token}, nil
+	CID := os.Getenv("CLIENT_ID")
+	CS := os.Getenv("CLIENT_SECRET")
+
+	return AppConfigs{Postgres: database, ClientID: CID, ClientSecret: CS}, nil
 }
