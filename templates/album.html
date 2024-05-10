@@ -94,14 +94,19 @@
  
 
     <div class="container">
-        <a href="http://localhost:8080/" class="btn btn-primary">Home</a>
-
-        <form action="/search" method="Get">
-            <div class="new-search">
-                <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
-                <button type="submit" class="btn btn-outline-primary">Search</button>
+        <header style="display: flex; align-items: center; margin-bottom: 50px;">
+            <div class="home" style="width: 50px; margin-right: 50px; ">
+                <a href="http://localhost:8080/" class="btn btn-primary" style="padding: 5px 10px;">Home</a>
             </div>
-        </form>
+        
+            <form action="http://localhost:8080/search" method="Get" style="display: flex; align-items: center; width:100%; margin-right: 10px;">
+                <div class="new-search" style="flex: 1;">
+                    <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+            
+        </header>
        
         <h2 class="title">Альбом</h2>
        
@@ -121,7 +126,7 @@
         </div>
         
         <h2 class="title">Треки</h2>
-        <div class="tracks-container">
+        <div class="tracks-container" style="margin-bottom: 30px;">
             <ul class="tracks-list">
                 {{range .AlbumInfo.Tracks.Items}}
                     <li>
@@ -137,14 +142,15 @@
             </ul>
         </div>
 
-        <form action="/albums/{{ .AlbumInfo.ID }}" method="Post">
-            <div class="new-comment">
-                <input name="comment" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
-                <button type="submit" class="btn btn-outline-primary">Comment</button>
+        <form action="/albums/{{ .AlbumInfo.ID }}" method="Post" style="display: flex; align-items: center; width:100%; margin-right: 10px;">
+            <div class="new-comment"style="flex: 1;">
+                <input name="comment" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
             </div>
+            <button type="submit" class="btn btn-outline-primary" style="display: inline-block;">Comment</button>
         </form>
         
-
+        
+        
         <div class="comments">
             <h3>Comments:</h3>
             {{range .Comments}}

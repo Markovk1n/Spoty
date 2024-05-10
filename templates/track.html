@@ -15,11 +15,13 @@
             align-items: center;
             min-height: 100vh;
         }
+        
         .container {
             max-width: 800px;
             width: 100%;
             padding: 20px;
         }
+
         .track-details {
             background-color: #fff;
             border-radius: 8px;
@@ -68,16 +70,25 @@
     </style>
 </head>
 <body>
+
+    
     
     <div class="container">
-        <a href="http://localhost:8080/" class="btn btn-primary">Home</a>
-
-        <form action="/search" method="Get">
-            <div class="new-search">
-                <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
-                <button type="submit" class="btn btn-outline-primary">Search</button>
+        <header style="display: flex; align-items: center; margin-bottom: 50px;">
+            <div class="home" style="width: 50px; margin-right: 50px; ">
+                <a href="http://localhost:8080/" class="btn btn-primary" style="padding: 5px 10px;">Home</a>
             </div>
-        </form>
+        
+            <form action="http://localhost:8080/search" method="Get" style="display: flex; align-items: center; width:100%; margin-right: 10px;">
+                <div class="new-search" style="flex: 1;">
+                    <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+            
+        </header>
+        
+        
         <div class="track-details">
             <h2>{{.TrackInfo.Name}}</h2>
             <p>Artists: 
@@ -96,11 +107,12 @@
             </div>
         </div>
 
-        <form action="/track/{{ .TrackInfo.ID }}" method="Post">
-            <div class="new-comment">
+        <form action="/track/{{ .TrackInfo.ID }}" method="Post" style="display: flex; align-items: center; width:100%; margin-right: 10px;">
+            <div class="new-comment"style="flex: 1;">
                 <input name="comment" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
-                <button type="submit" class="btn btn-outline-primary">Comment</button>
+                
             </div>
+            <button type="submit" class="btn btn-outline-primary">Comment</button>
         </form>
         
 
