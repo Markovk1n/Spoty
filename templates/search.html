@@ -6,71 +6,166 @@
     <title>Centered Content</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4; /* Цвет фона страницы */
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
-            text-align: center; /* Центрируем содержимое внутри контейнера */
-            background-color: #fff; /* Цвет фона контейнера */
-            border-radius: 10px; /* Скругление углов контейнера */
+            max-width: 800px;
+            width: 100%;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень контейнера */
+
+            text-align: center;
+            background-color: #fff; 
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
         }
 
         .section {
-            margin-bottom: 20px; /* Пространство между секциями */
+            margin-bottom: 20px; 
         }
 
         h2 {
-            color: #333; /* Цвет заголовков секций */
+            color: #333; 
         }
 
         ul {
-            list-style-type: none; /* Убираем маркеры списка */
+            list-style-type: none; 
             padding: 0;
         }
 
         li {
-            background-color: #f9f9f9; /* Цвет фона элементов списка */
-            padding: 10px 20px; /* Отступы внутри элементов списка */
-            margin-bottom: 5px; /* Пространство между элементами списка */
-            border-radius: 5px; /* Скругление углов элементов списка */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень элементов списка */
+            background-color: #f9f9f9; 
+            padding: 10px 20px; 
+            margin-bottom: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
         }
+
+ 
+        .artist-container {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.images {
+    margin-right: 20px;
+}
+
+.images img {
+    max-width: 120px;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.artist-info li {
+    list-style-type: none;
+}
+
+.artist-info li a {
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
+}
+
+.artist-info li a:hover {
+    color: #666;
+}
+
+.artist-item {
+    display: flex;
+    align-items: center;
+}
+
+.artist-images {
+    margin-right: 20px;
+}
+
+.artist-info {
+       width: 50;
+}
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <a href="http://localhost:8080/" class="btn btn-primary">Home</a>
-
         <div class="section">
+        <div class="artists-container">
             <h2>Артисты</h2>
-            <ul>
+            <ul class="artists-list">
                 {{ range .results.Artists.Items }}
-                <li><a href="/artists/{{ .ID }}">{{ .Name }}</a></li>
-                    
+                <li class="artist-item">
+                    <div class="artist-images">
+                        {{with index .Images 1}}
+                        <img src="{{.Url}}" alt="Фото артиста" style="width: 120px; height: 100px;">
+                        {{end}}
+                    </div>
+                    <div class="artist-info">
+                        <a href="/artists/{{ .ID }}">{{ .Name }}</a>
+                    </div>
+                </li>
                 {{ end }}
             </ul>
         </div>
+        </div>
+        
+        
+        
         <div class="section">
+        <div class="artists-container">
             <h2>Треки</h2>
-            <ul>
+            <ul class="artists-list">
                 {{ range .results.Tracks.Items }}
-                    <li><a href="/track/{{ .ID }}">{{ .Name }}</a></li>
+                <li class="artist-item">
+                    <div class="artist-images">
+                        {{ with index .Album.Images 1 }}
+                            <img src="{{ .Url }}" alt="Фото артиста" style="width: 120px; height: 100px;">
+                        {{ end }}
+                    </div>
+                    <div class="artist-info">
+                    <a href="/track/{{ .ID }}">{{ .Name }}</a>
+                </div>
+                </li>
                 {{ end }}
             </ul>
+        </div>
         </div>
 
+
+
         <div class="section">
-            <h2>Альбомы</h2>
-            <ul>
-                {{ range .results.Albums.Items }}
-                    <li><a href="/albums/{{ .ID }}">{{ .Name }}</a></li>
-                {{ end }}
-            </ul>
+            <div class="artists-container">
+                <h2>Альбомы</h2>
+                <ul class="artists-list">
+                    {{ range .results.Albums.Items }}
+                    <li  class="artist-item">
+
+                        <div class="artist-images">
+                            {{ with index .Images 1 }}
+                                <img src="{{ .Url }}" alt="Фото артиста" style="width: 120px; height: 100px;">
+                            {{ end }}
+                        </div>
+                        <div class="artist-info">
+                            <a href="/albums/{{ .ID }}">{{ .Name }}</a>
+                        </div>
+                        
+                    </li>
+                    {{end}}
+                </ul>
+            </div>
+
+    
         </div>
     </div>
 </body>
