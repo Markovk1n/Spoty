@@ -54,20 +54,19 @@
             background-color: #6d44b8;
         }
     </style>
+     
+
 </head>
 <body>
     
     <div class="container">
-        
-        {{if ge .HomeUser.Id 1}}
-    <div class="auth-button-container">
-        <a href="/sign-out" class="auth-button" id="authButton">Выход</a>
-    </div>
-        {{ else }}
-    <div class="auth-button-container">
-        <a href="http://localhost:8080/auth" class="auth-button" id="authButton">Авторизация</a>
-    </div>
-        {{ end }}
+        <a id="authButton" class="auth-button" href="{{if .User}}/auth/sign-out{{else}}/auth{{end}}">
+            {{if .User}}
+                Sign out
+            {{else}}
+                Авторизация
+            {{end}}
+        </a>
     
     
         <header style="display: flex; align-items: center; margin-bottom: 50px;">
@@ -123,15 +122,26 @@
         
     </div>
 
+    <script>
+        
+        function changeButtonText() {
+           
+            var authButton = document.getElementById("authButton");
+            
+         
+            authButton.innerHTML = "Новый текст кнопки";
+        }
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // Функция для изменения текста и ссылки кнопки авторизации
+       
         function changeAuthButton() {
             var authButton = document.getElementById('authButton');
             authButton.textContent = 'Авторизован';
-            authButton.href = 'ttp://localhost:8080/auth'; // Здесь вы можете установить ссылку на другую страницу, если требуется
+            authButton.href = 'ttp://localhost:8080/auth'; 
         }
     </script>
 </body>

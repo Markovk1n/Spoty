@@ -149,10 +149,10 @@ function sendData(url, data) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                // Обработка успешного ответа от сервера
+              
                 window.location.href = "http://localhost:8080/";
             } else {
-                // Обработка неудачного ответа от сервера
+                
                 window.location.href = "http://localhost:8080/Error";
             }
         }

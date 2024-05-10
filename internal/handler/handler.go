@@ -52,6 +52,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.GET("/", h.authPage)
 		auth.POST("/sign-up", h.singUp)
 		auth.POST("/sign-in", h.singIn)
+		auth.GET("/sign-out", h.singOut)
 	}
 
 	albums := router.Group("/albums")

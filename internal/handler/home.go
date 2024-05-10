@@ -19,6 +19,16 @@ func (h *Handler) home(c *gin.Context) {
 	client := spotify.NewClient(token1)
 	albumsResult, _ := client.Album.List("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc,2cWBwpqMsDJC1ZUwz813lo,2WT1pbYjLJciAR26yMebkH,3PZmQxxLUZwyyMgXWUpmuw")
 	art := GetArtistsForHome(token1, at)
+
+	var flag bool
+	_, err := c.Request.Cookie("session_token")
+	if err != nil {
+		flag = false
+
+	} else {
+		flag = true
+	}
+
 	// artRes := []spotify.Artist{}
 	// ///
 	// artists := []string{
@@ -39,6 +49,7 @@ func (h *Handler) home(c *gin.Context) {
 	// ///
 
 	homeResult := &Home{
+		User: flag,
 		HomeUser: models.User{
 			Id: userID,
 		},
@@ -51,6 +62,7 @@ func (h *Handler) home(c *gin.Context) {
 }
 
 type Home struct {
+	User        bool
 	HomeUser    models.User
 	HomeAlbums  *spotify.AlbumsResult
 	HomeArtists *spotify.ArtistsResult
@@ -59,20 +71,16 @@ type Home struct {
 func GetArtistsForHome(token, ids string) *spotify.ArtistsResult {
 	url := fmt.Sprintf("https://api.spotify.com/v1/artists?ids=%s", ids)
 
-	// Создаем HTTP-клиент
 	client := &http.Client{}
 
-	// Создаем GET-запрос
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println("Error creating request:", err)
 		return nil
 	}
 
-	// Устанавливаем заголовок Authorization
 	req.Header.Set("Authorization", "Bearer "+token)
 
-	// Отправляем запрос
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Error sending request:", err)
@@ -80,7 +88,6 @@ func GetArtistsForHome(token, ids string) *spotify.ArtistsResult {
 	}
 	defer resp.Body.Close()
 
-	// Считываем тело ответа
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("Error reading response body:", err)

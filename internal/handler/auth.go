@@ -45,7 +45,6 @@ func (h *Handler) singIn(c *gin.Context) {
 		return
 	}
 
-	// Устанавливаем токен как значение в cookie
 	cookie := &http.Cookie{
 		Name:  "session_token",
 		Value: token,
@@ -53,18 +52,32 @@ func (h *Handler) singIn(c *gin.Context) {
 	}
 	http.SetCookie(c.Writer, cookie)
 
-	// Возвращаем токен в JSON-ответе
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
 	})
+}
+
+func (h *Handler) singOut(c *gin.Context) {
+
+	_, err := c.Request.Cookie("session_token")
+	if err != nil {
+
+		c.Redirect(http.StatusFound, "/")
+		return
+	}
+
+	cookie := &http.Cookie{
+		Name:   "session_token",
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	}
+	http.SetCookie(c.Writer, cookie)
+
+	c.Redirect(http.StatusFound, "/")
 
 }
 
 func (h *Handler) authPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "auth.html", nil)
 }
-
-// func (h *Handler) singInGet(c *gin.Context) {
-// 	c.HTML(http.StatusOK, "login.html", nil)
-
-// }
