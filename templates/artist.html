@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Main Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
+         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
@@ -15,80 +16,129 @@
             align-items: center;
             min-height: 100vh;
         }
+        
         .container {
-            max-width: 1800px;
+            max-width: 800px;
             width: 100%;
             padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
         }
-        .album {
+
+        .track-details {
             background-color: #fff;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-right: 20px;
             margin-bottom: 20px;
-            max-width: calc(25% - 20px);
-            flex: 0 0 calc(25% - 20px);
         }
-        .title {
+        .player {
+            margin-top: 20px;
+        }
+        .player audio {
             width: 100%;
-            margin-bottom: 20px;
         }
-        .auth-button-container {
-            text-align: right;
+       
+        audio {
             width: 100%;
-            margin-bottom: 20px;
+            margin-top: 10px;
         }
-        .auth-button {
+        .player-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .player-buttons button {
             background-color: #573b8a;
             color: #fff;
             border: none;
             border-radius: 5px;
-            padding: 10px 20px;
-            font-weight: bold;
+            padding: 5px 10px;
+            font-size: 1em;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .auth-button:hover {
+        .player-buttons button:hover {
             background-color: #6d44b8;
+        }
+
+        /* Коменты */
+        .comments {
+            margin-top: 20px;
+        }
+        .comment {
+            margin-bottom: 10px;
+        }
+      
+        .artist-info {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .artist-info h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .artist-info p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .artist-info h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .artist-info ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .artist-info ul li {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .images img {
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
-    <header style="display: flex; align-items: center; margin-bottom: 50px;">
-        <div class="home" style="width: 50px; margin-right: 50px; ">
-            <a href="http://localhost:8080/" class="btn btn-primary" style="padding: 5px 10px;">Home</a>
-        </div>
-    
-        <form action="http://localhost:8080/search" method="Get" style="display: flex; align-items: center; width:100%; margin-right: 10px;">
-            <div class="new-search" style="flex: 1;">
-                <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+    <div class="container">
+        <header style="display: flex; align-items: center; margin-bottom: 50px;">
+            <div class="home" style="width: 50px; margin-right: 50px; ">
+                <a href="http://localhost:8080/" class="btn btn-primary" style="padding: 5px 10px;">Home</a>
             </div>
-            <button type="submit" class="btn btn-outline-primary">Search</button>
-        </form>
         
-    </header>
-    <div class="artist-info">
-        <h1>{{.Name}}</h1>
-        <p>Popularity: {{.Popularity}}</p>
-        <h2>Genres:</h2>
-        <ul>
-            {{range .Genres}}
-            <li>{{.}}</li>
-            {{end}}
-        </ul>
-        <h2>Images:</h2>
-        <div class="images">
-            {{range .Images}}
-            <img src="{{.Url}}" alt="Artist Image" width="{{.Width}}" height="{{.Height}}">
-            {{end}}
+            <form action="http://localhost:8080/search" method="Get" style="display: flex; align-items: center; width:100%; margin-right: 10px;">
+                <div class="new-search" style="flex: 1;">
+                    <input name="search" type="text" class="form-control" aria-label="Text input with segmented dropdown button" required>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+            
+        </header>
+
+        <div class="artist-info">
+            <h1>{{.Name}}</h1>
+            <p>Popularity: {{.Popularity}}</p>
+            <h2>Genres:</h2>
+            <ul>
+              {{range .Genres}}
+                <li>{{.}}</li>
+              {{end}}
+            </ul>
+            <h2>Images:</h2>
+            <div class="images">
+                {{with index .Images 1}}
+                    <img src="{{.Url}}" alt="Artist Image" width="{{.Width}}" height="{{.Height}}">
+                {{end}}
+            </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-   
 </body>
 </html>
+
+    
