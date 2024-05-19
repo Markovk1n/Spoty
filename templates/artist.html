@@ -6,103 +6,129 @@
     <title>Artist Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 800px;
-            width: 100%;
-            padding: 20px;
-        }
+       body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 
-        .track-details {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .player {
-            margin-top: 20px;
-        }
-        .player audio {
-            width: 100%;
-        }
+.container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+}
+
+.track-details {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.track-image {
+    margin-right: 20px;
+}
+
+.track-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.track-name {
+    margin-bottom: 10px;
+}
+
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Дополнительные стили, если нужны для других частей страницы */
+.player-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.player-buttons button {
+    background-color: #573b8a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.player-buttons button:hover {
+    background-color: #6d44b8;
+}
+
+.comments {
+    margin-top: 20px;
+}
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.artist-info {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.artist-info h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.artist-info p {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.artist-info h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.artist-info ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.artist-info ul li {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.images img {
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    max-width: 100%;
+}
+
        
-        audio {
-            width: 100%;
-            margin-top: 10px;
-        }
-        .player-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .player-buttons button {
-            background-color: #573b8a;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .player-buttons button:hover {
-            background-color: #6d44b8;
-        }
-
-        /* Коменты */
-        .comments {
-            margin-top: 20px;
-        }
-        .comment {
-            margin-bottom: 10px;
-        }
-      
-        .artist-info {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .artist-info h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .artist-info p {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-        .artist-info h2 {
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-        .artist-info ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .artist-info ul li {
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        .images img {
-            display: block;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            max-width: 100%;
-        }
     </style>
 </head>
 <body>
@@ -122,21 +148,45 @@
         </header>
 
         <div class="artist-info">
-            <h1>{{.Name}}</h1>
-            <p>Popularity: {{.Popularity}}</p>
+            <h1><strong>{{.ArtistInfo.Name}}</strong></h1>
+            <p>Popularity: {{.ArtistInfo.Popularity}}</p>
             <h2>Genres:</h2>
             <ul>
-              {{range .Genres}}
+              {{range .ArtistInfo.Genres}}
                 <li>{{.}}</li>
               {{end}}
             </ul>
             <h2>Images:</h2>
             <div class="images">
-                {{with index .Images 1}}
+                {{with index .ArtistInfo.Images 1}}
                     <img src="{{.Url}}" alt="Artist Image" width="{{.Width}}" height="{{.Height}}">
                 {{end}}
             </div>
         </div>
+
+
+        <div class="top-tracks">
+            <h2>Top Tracks:</h2>
+            {{range .TopTracks.Tracks}}
+            <div class="track">
+                <div class="track-image">
+                    {{with index .Album.Images 1}}
+                        <img src="{{.Url}}" alt="Artist Image" style="width: 120px; height: 100px;">
+                    {{end}} 
+                </div>
+                <div class="track-info">
+                    <p class="track-name"><strong>{{.Name}}</strong></p>
+                    <audio controls>
+                        <source src="{{.PreviewURL}}" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+            
+            {{end}}
+        </div>
+
+
     </div>
 </body>
 </html>

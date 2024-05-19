@@ -56,6 +56,7 @@ func (s *ArtistService) List(IDs string) (*ArtistsResult, error) {
 func (s *ArtistService) Get(ID string) (*Artist, error) {
 	var err error
 	res := new(Artist)
+
 	s.client.base.Path("artists/").Get(ID).Receive(res, err)
 	return res, err
 }
@@ -63,9 +64,11 @@ func (s *ArtistService) Get(ID string) (*Artist, error) {
 func (s *ArtistService) GetTopTracks(ID, country string) (*TracksResult, error) {
 	var err error
 	res := new(TracksResult)
-	params := &CountryParams{country}
+	// params := &CountryParams{country}
 	artists := fmt.Sprintf("artists/%s/", ID)
-	s.client.base.Path(artists).Get("top-tracks").QueryStruct(params).Receive(res, err)
+
+	s.client.base.Path(artists).Get("top-tracks").Receive(res, err)
+
 	return res, err
 }
 
